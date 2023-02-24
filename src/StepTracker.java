@@ -2,53 +2,62 @@ import java.util.Scanner;
 
 class StepTracker {
     Scanner scanner;
-    int goalByStepsPerDay=10_000;
-    MonthData[] monthToData = new MonthData[12];
-    Converter converter=new Converter();
+    int goalByStepsPerDay;
+    MonthData[] monthToData;
+    Converter converter;
 
-    StepTracker(Scanner scan) {
-        scanner = scan;
-
+    StepTracker(Scanner scanner) {
+        this.scanner = scanner;
+        setStepTracker();
+    }
+    void setStepTracker(){
+        goalByStepsPerDay=10_000;
+        monthToData = new MonthData[12];
+        converter=new Converter();
         for (int i = 0; i < monthToData.length; i++) {
             monthToData[i] = new MonthData();
         }
-    }
 
+    }
     void addNewNumberStepsPerDay() {
-        String messageWrong = null;
+        String wrongMessage=null;
         int month, day=0, steps=0;
+        boolean wrongInput=false;
 
         System.out.println("Введите номер месяца");
-        month=scanner.nextInt();
+        month=Utils.inputInt(scanner);
         if (!(month>=1&month<=12)){
-            messageWrong="Месяц должен быть числом от 1 до 12";
+            wrongInput=true;
+            wrongMessage ="Месяц должен быть числом от 1 до 12";
         }
 
-        if (messageWrong==null) {
+        if (!wrongInput) {
             System.out.println("Введите день от 1 до 30 (включительно)");
-            day = scanner.nextInt();
+            day = Utils.inputInt(scanner);
             if (!(day >= 1 & day <= 30)) {
-                messageWrong="День должен быть от 1 до 30 включительно";
+                wrongInput=true;
+                wrongMessage ="День должен быть от 1 до 30 включительно";
             }
         }
 
-        if (messageWrong==null) {
+        if (!wrongInput) {
             System.out.println("Введите количество шагов");
-            steps  = scanner.nextInt();
+            steps  = Utils.inputInt(scanner);
             if (!(steps>0)){
-                messageWrong="Количество шагов должно быть >0 ";
+                wrongInput=true;
+                wrongMessage ="Количество шагов должно быть >0 ";
             }
         }
-        if (messageWrong==null) {
+        if (!wrongInput) {
             monthToData[month-1].days[day-1]=steps;
         } else {
-            System.out.println("Ввели неверные данные: "+ messageWrong);
+            System.out.println("Ввели неверные данные: "+ wrongMessage);
         }
     }
 
     void changeStepGoal(){
         System.out.println("Введите количество шагов в день по умолчнию: ");
-        int steps  = scanner.nextInt();
+        int steps  = Utils.inputInt(scanner);
         if (!(steps>0)){
             System.out.println("Ввели неверные данные: Количество шагов должно быть положительным числом");
         } else {
@@ -59,7 +68,7 @@ class StepTracker {
     void printStatistic(){
         System.out.println("Введите число месяца");
         // ввод и проверка номера месяца
-        int monthData =scanner.nextInt();
+        int monthData =Utils.inputInt(scanner);
         if (monthData>=1&monthData<=12){
 
             // получение суммы шагов за месяц

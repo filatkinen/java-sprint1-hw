@@ -7,7 +7,7 @@ public class Main {
         boolean isExit=false;
         while (!isExit){
             printMenu();
-            switch (scanner.nextInt()){
+            switch (Utils.inputInt(scanner)){
                 case 1://Ввести количество шагов за определённый день
                     stepTracker.addNewNumberStepsPerDay();
                     break;
